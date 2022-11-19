@@ -1,0 +1,46 @@
+img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
+  
+#canvas {
+    height: 80vh;
+    width: 50vw;
+    background-color: #ffffff;
+    cursor: default;
+    border: 1px solid black;
+    top:5vh
+  }
+#canvas-container{
+    top: 5vh;
+    left: 5vw
+}
+#input-fields{
+    top:5vh;
+    width: 50vw;
+    padding-bottom: 1vh;
+}
+.flexbox{
+  display: flex;
+  justify-content: flex-start;
+}
+#content{
+  display: flex;
+  top: 50vh !important;
+  padding: 1vh 1vw 1vh 1vw;
+}
+.nav-custom{
+  height: 7vh
+}
+.searchinput{
+   margin-bottom: 0 !important;
+}
+#instructions{
+  padding-left: 1vw;
+}
+.box{
+  display: flex;
+  align-items:flex-start;
+}
+#imgcanvas{
+  border: 1pt solid black;
+}
