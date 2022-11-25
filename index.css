@@ -3,7 +3,7 @@ img {
   }
   
 #canvas {
-    height: 80vh;
+    height: 85vh;
     width: 50vw;
     background-color: #ffffff;
     cursor: default;
@@ -40,7 +40,12 @@ img {
 .box{
   display: flex;
   align-items:flex-start;
+  margin-top: 0.3vh;
 }
 #imgcanvas{
   border: 1pt solid black;
+  height: 20vh;
+}
+#btnFinished{
+  margin-left: 1vw;
 }

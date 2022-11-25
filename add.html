@@ -13,10 +13,10 @@
     <link  href="node_modules/cropperjs/dist/cropper.css" rel="stylesheet">
     <script src="node_modules/jquery-cropper/dist/jquery-cropper.js"></script>
     <link rel="stylesheet" href="index.css">
+    <script src="node_modules/tesseract.js/dist/tesseract.min.js"></script>
     <script src="add.js"></script>
-    
 </head>
-<body>
+<body style="overflow: hidden;">
     <nav class="navbar navbar-expand-lg bg-light nav-custom">
         <div class="container-fluid">
           <a class="navbar-brand" href="index.html">Meine Rezepte</a>
@@ -43,52 +43,52 @@
       <div id="left-side">
         <div id="input-fields">
           <input type="file" id="fileInput" accept="image/*" />
-          <input type="button" id="btnRestore" value="Zurücksetzen" />
+          <input type="button" id="btnRestore" value="Zurücksetzen"/>
+          <input type="button" id="btnCrop" value="Auswählen" />
         </div>
         <div id="canvas-container">
-          <canvas id="canvas">
-          </canvas>
+          <canvas id="canvas">Your browser not support the HTML5 canvas</canvas>
         </div>
       </div>
       <div id="instructions">
         <h5>Neues Rezept hinzufügen: Anleitung</h5>
         <ol>
-          <li>Titel umranden OK drücken</li>
+          <li>Titel umranden und Auswählen drücken</li>
           <div class="box">
             <p>Titel:</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            <input type="text" placeholder="Titel" id="txtTitle" class="area" size="33">
             <p>&nbsp;</p>
-            <input type="text" placeholder="Titel">
-            <p>&nbsp;</p>
-            <input type="button" id="btnCropTitle" value="OK" />
-            <p>&nbsp;</p>
-            <input type="button" id="repeat" value="Wiederholen">
           </div>
-          <li>Bild umranden und OK drücken</li>
+          <li>Bild umranden und Auswählen drücken</li>
           <div class="box">
-            <p>Bild:</p>
+            <p>Bild:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <p>&nbsp;</p>
-            <canvas id="imgcanvas"></canvas>
+            <canvas id="imgcanvas">Your browser not support the HTML5 canvas </canvas>
             <p>&nbsp;</p>
-            <input type="button" id="btnCropImg" value="OK" />
-            <p>&nbsp;</p>
-            <input type="button" id="repeat" value="Wiederholen">
+            <input type="button" id="repeatImg" value="Wiederholen">
           </div>
-          <li>Zutaten umranden und OK drücken</li>
+          <li>Zutaten umranden und Auswählen drücken</li>
           <div class="box">
-            <p>Zutaten:</p>
+            <p>Zutaten: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <p>&nbsp;</p>
-            <ul>
-              <li></li>
-            </ul>
+            <textarea id="txtIngredients" cols="36" rows="6" class="area"></textarea>
             <p>&nbsp;</p>
-            <input type="button" id="btnCropZutaten" value="OK" />
-            <p>&nbsp;</p>
-            <input type="button" id="repeat" value="Wiederholen">
+            <input type="button" id="repeatIngredients" value="Wiederholen">
           </div>
-          <li>Zubereitung umranden und OK drücken</li>
-          <li>alles überprüfen und Fertig drücken</li>
+          <li>Zubereitung umranden und Auswählen drücken</li>
+          <div class="box">
+            <p>Zubereitung:</p>
+            <p>&nbsp;</p>
+            <textarea id="txtMaking" cols="36" rows="6" class="area"></textarea>
+            <p>&nbsp;</p>
+            <input type="button" id="repeatMaking" value="Wiederholen">
+          </div>
+          <div class="box">
+            <li>Wenn alles stimmt, Fertig drücken</li>
+            <input type="button" id="btnFinished" value="Fertig" />
+          </div>
         </ol>
-        <input type="button" id="btnCrop" value="Crop" />
       </div>
     </div>
 </body>
