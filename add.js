@@ -24,7 +24,6 @@ $( document ).ready(function() {
                     scalable:false,
                 });
                 $('#btnCrop').click(function() {
-                    // Get a string base 64 data url
                     var croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png");
                     displayCurrentPart(croppedImageDataURL)
                 });
@@ -44,37 +43,71 @@ $( document ).ready(function() {
         alert('No file(s) selected.');
         }
     }); 
+    //#region focus function
     const title= document.querySelector('input[id="txtTitle"]')
     const ingredients= document.querySelector('textarea[id=txtIngredients]')
     const making= document.querySelector('textarea[id="txtMaking"]')
-    const image=document.querySelector('canvas[id="imgcanvas"]')
+    const imagediv=document.querySelector('div[id="imgdiv"]')
     const repeatImg= document.querySelector('input[id="repeatImg"]')
     const repeatIngredients= document.querySelector('input[id="repeatIngredients"]')
     const repeatMaking= document.querySelector('input[id="repeatMaking"]')
-    title.addEventListener('focus', (event) => {
+    var element=document.createElement("canvas")
+    element.setAttribute("id","imgcanvas")
+    imagediv.appendChild(element)
+    var imgcanvas=document.querySelector('canvas[id=imgcanvas]')
+    title.addEventListener('click', (event) => {
         currentPart=currentScanPart.Title
+        imagediv.classList.remove('Focused')
+        making.classList.remove('Focused')
+        ingredients.classList.remove('Focused')
+        title.classList.add('Focused')
     });
-    ingredients.addEventListener('focus', (event) => {
+    ingredients.addEventListener('click', (event) => {
         currentPart=currentScanPart.Ingredients
+        imagediv.classList.remove('Focused')
+        making.classList.remove('Focused')
+        ingredients.classList.add('Focused')
+        title.classList.remove('Focused')
     });
-    making.addEventListener('focus', (event) => {
+    making.addEventListener('click', (event) => {
         currentPart=currentScanPart.Making
+        imagediv.classList.remove('Focused')
+        making.classList.add('Focused')
+        ingredients.classList.remove('Focused')
+        title.classList.remove('Focused')
     });
-    image.addEventListener('click', (event)=> {
+    imagediv.addEventListener('click', (event)=> {
         currentPart=currentScanPart.Image
+        imagediv.classList.add('Focused')
+        making.classList.remove('Focused')
+        ingredients.classList.remove('Focused')
+        title.classList.remove('Focused')
     })
     repeatImg.addEventListener('click', (event)=> {
         currentPart=currentScanPart.Image
-        context.clearRect(0,0,canvas.width, canvas.height)
+        imgcanvas.parentNode.removeChild(imgcanvas)
+        var element=document.createElement("canvas")
+        element.setAttribute("id","imgcanvas")
+        imagediv.appendChild(element)
+        imgcanvas=document.querySelector('canvas[id=imgcanvas]')
     })
     repeatIngredients.addEventListener('click', (event)=> {
         currentPart=currentScanPart.Ingredients
-        $('#txtIngredients').val=("")
+        imagediv.classList.remove('Focused')
+        making.classList.remove('Focused')
+        ingredients.classList.add('Focused')
+        title.classList.remove('Focused')
+        $('#txtIngredients').val("")
     })
     repeatMaking.addEventListener('click', (event)=> {
+        image.classList.remove('Focused')
+        making.classList.add('Focused')
+        ingredients.classList.remove('Focused')
+        title.classList.remove('Focused')
         currentPart=currentScanPart.Making
         $('#txtMaking').val("")
     })
+    //#endregion
 });
 //#region Variables
 var currentPart=currentScanPart.Title
@@ -103,7 +136,6 @@ function displayCurrentPart(croppedImageDataURL){
             break;
         case currentScanPart.Making:
             readTXT(croppedImage, $('#txtMaking'))
-            making_inserted=true;
             break;
     }
 }

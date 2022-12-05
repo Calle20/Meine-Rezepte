@@ -42,10 +42,38 @@ img {
   align-items:flex-start;
   margin-top: 0.3vh;
 }
-#imgcanvas{
+.imgcanvas{
   border: 1pt solid black;
+  padding: 1pt;
   height: 20vh;
+  width: 24.5vw;
+  margin-left:5.3vw !important;
+}
+#imgcanvas{
+  height: 20vh;
+  width: 24vw;
+}
+.Focused{
+  border: 2pt solid black;
+  padding: 0 !important;
 }
 #btnFinished{
   margin-left: 1vw;
+}
+.area{
+  resize: none;
+  padding: 1.2pt;
+}
+#txtIngredients{
+  margin-left: 3vw !important;
+  width: 24.4vw;
+  height: 20vh;
+}
+#txtMaking{
+  margin-left: 0.2vw !important;
+  width: 24.4vw;
+  height: 20vh;
+}
+#txtTitle{
+  margin-left: 5vw !important;
 }
