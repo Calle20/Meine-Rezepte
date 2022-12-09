@@ -42,12 +42,13 @@ img {
   align-items:flex-start;
   margin-top: 0.3vh;
 }
-.imgcanvas{
+.imgdiv{
   border: 1pt solid black;
   padding: 1pt;
   height: 20vh;
   width: 24.5vw;
   margin-left:5.3vw !important;
+
 }
 #imgcanvas{
   height: 20vh;
@@ -76,4 +77,8 @@ img {
 }
 #txtTitle{
   margin-left: 5vw !important;
+}
+#instructions{
+  overflow-x: hidden;
+  overflow-y: auto;
 }

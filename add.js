@@ -5,7 +5,7 @@ var currentScanPart;
     currentScanPart[currentScanPart["Making"] = 2] = "Making";
     currentScanPart[currentScanPart["Ingredients"] = 3] = "Ingredients";
 })(currentScanPart || (currentScanPart = {}));
-
+var croppedImageDataURL;
 $( document ).ready(function() {
     var canvas  = $("#canvas"),
         context = canvas.get(0).getContext('2d');
@@ -24,7 +24,7 @@ $( document ).ready(function() {
                     scalable:false,
                 });
                 $('#btnCrop').click(function() {
-                    var croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png");
+                    croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png");
                     displayCurrentPart(croppedImageDataURL)
                 });
                 $('#btnRestore').click(function() {
@@ -43,7 +43,10 @@ $( document ).ready(function() {
         alert('No file(s) selected.');
         }
     }); 
-    //#region focus function
+    window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
+    dbVersion=1
+
+    //#region events
     const title= document.querySelector('input[id="txtTitle"]')
     const ingredients= document.querySelector('textarea[id=txtIngredients]')
     const making= document.querySelector('textarea[id="txtMaking"]')
@@ -51,6 +54,7 @@ $( document ).ready(function() {
     const repeatImg= document.querySelector('input[id="repeatImg"]')
     const repeatIngredients= document.querySelector('input[id="repeatIngredients"]')
     const repeatMaking= document.querySelector('input[id="repeatMaking"]')
+    const btnFinished=document.querySelector('input[id="btnFinished"]')
     var element=document.createElement("canvas")
     element.setAttribute("id","imgcanvas")
     imagediv.appendChild(element)
@@ -107,6 +111,9 @@ $( document ).ready(function() {
         currentPart=currentScanPart.Making
         $('#txtMaking').val("")
     })
+    btnFinished.addEventListener("click", (event)=>{
+        inputFinished($('#txtTitle').val(), croppedImageDataURL, $('#txtIngredients').val(), $('#txtMaking').val())
+    })
     //#endregion
 });
 //#region Variables
@@ -139,6 +146,7 @@ function displayCurrentPart(croppedImageDataURL){
             break;
     }
 }
+
 function drawImageScaled(img, ctx) {
     var canvas = ctx.canvas ;
     var hRatio = canvas.width  / img.width    ;
@@ -149,6 +157,7 @@ function drawImageScaled(img, ctx) {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     ctx.drawImage(img, 0,0, img.width, img.height,centerShift_x,centerShift_y,img.width*ratio, img.height*ratio);  
 }
+
 function readTXT(croppedImage, field){
     field.attr('placeholder','Lädt...')
     const worker = Tesseract.createWorker({
@@ -159,9 +168,56 @@ function readTXT(croppedImage, field){
     await worker.loadLanguage('deu');
     await worker.initialize('deu');
     const { data: { text } } = await worker.recognize(croppedImage);
-    text.replace("\r\n"," ")
-    field.val(text)
+    outtext=text.replace("\n\n", '');
+    outtext=outtext.replace(/\n+/g, '\n', "Lol")
+    field.val(outtext)
     field.attr('placeholder','')
     await worker.terminate();
     })();
+}
+
+function inputFinished(title, imgcanvas, ingredients, making){
+    const request = indexedDB.open('MeineRezepte', 1);
+    
+    request.onerror = (event) => {
+        console.error(`Database error: ${event.target.errorCode}`);
+    };
+    
+    request.onsuccess = (event) => {
+        const db=event.target.result
+        // create a new transaction
+        const txn = db.transaction('Rezepte', 'readwrite');
+            // get the Contacts object store
+        const store = txn.objectStore('Rezepte');
+        //
+        let query = store.put({Title:title, Image:imgcanvas, Ingredients: ingredients, Making:making});
+        
+        // handle success case
+        query.onsuccess = function (event) {
+            console.log("Succes");
+        };
+        // handle the error case
+        query.onerror = function (event) {
+            console.log(event.target.errorCode);
+        }
+        // close the database once the 
+        // transaction completes
+        txn.oncomplete = function () {
+            db.close();
+        };
+    };
+
+    request.onupgradeneeded = (event) => {
+        let db = event.target.result;
+   
+        // create the Contacts object store 
+        // with auto-increment id
+        let store = db.createObjectStore('Rezepte', {
+            autoIncrement: true
+        });
+        store.createIndex("by_title", "Title");
+        store.createIndex("by_Img", "Image");
+        store.createIndex("by_ingredients", "Ingredients");
+        store.createIndex("by_making", "Making");
+    };
 }
