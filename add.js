@@ -213,11 +213,10 @@ function inputFinished(title, imgcanvas, ingredients, making){
         // create the Contacts object store 
         // with auto-increment id
         let store = db.createObjectStore('Rezepte', {
-            autoIncrement: true
+            autoIncrement: true,
+            keyPath: 'by_title'
         });
         store.createIndex("by_title", "Title");
-        store.createIndex("by_Img", "Image");
         store.createIndex("by_ingredients", "Ingredients");
-        store.createIndex("by_making", "Making");
     };
 }
