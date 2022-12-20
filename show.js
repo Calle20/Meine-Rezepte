@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var query=location.search
-    GetRecipes(query.split("=")[1])
+    GetRecipes(decodeURIComponent(query.split("=")[1]))
     var uri = window.location.toString();
     if (uri.indexOf("?") > 0) {
         var clean_uri = uri.substring(0, uri.indexOf("?"));
@@ -46,5 +46,10 @@ function GetRecipes(title){
     };
 }
 function ShowRecipe(recipe){
-
+    console.table(recipe)
+    document.getElementById('showTitle').innerText=recipe.Title,
+    document.getElementById('showIngredients').innerText=recipe.Ingredients
+    document.getElementById('showMaking').innerText=recipe.Making
+    let img=document.getElementById('showImage')
+    img.src=recipe.Image
 }

@@ -194,7 +194,7 @@ function inputFinished(title, imgcanvas, ingredients, making){
         
         // handle success case
         query.onsuccess = function (event) {
-            console.log("Succes");
+            location.href=location.href
         };
         // handle the error case
         query.onerror = function (event) {

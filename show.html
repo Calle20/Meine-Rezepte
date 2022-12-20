@@ -2,6 +2,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Meine Rezepte</title>
         <link rel="icon" type="image/png" href="assets/icon.jpg">
         <link href="bootstrap-5.2.2-dist/bootstrap-5.2.2-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -34,8 +35,23 @@
         </div>
     </nav>
 
-    <div id="content" class="flexbox">
-
+    <div class="container-fluid mb-2 text-center">
+        <h1 class="fs-1" id="showTitle">Titel</h1>
+        <br><br>
+        <img id="showImage">
+        <div class="d-flex justify-content-end align-items-baseline text-start">
+          <h3 class="left fs-2 me-3">Zutaten</h3>
+          <h3 class="right fs-2">Zubereitung</h3>
+        </div>
+        <br>
+        <div class="d-flex justify-content-start ms-4 text-start">
+          <div class="left">
+            <p id="showIngredients" class="fs-6">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officiis, commodi nihil. Laborum vitae vero dolores esse. Blanditiis ad dignissimos error, quidem iste perferendis inventore. Necessitatibus tempore officiis ab blanditiis aut!</p>
+          </div>
+          <div class="right ms-4">
+            <p id="showMaking" class="fs-6">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Pariatur molestias ipsum aperiam nemo ipsa rerum recusandae omnis labore aliquid totam nihil rem ea eius quo corporis iusto, itaque deserunt! Quis.</p>
+          </div>
+        </div>
     </div>
       
     </div>
