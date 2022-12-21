@@ -6,6 +6,7 @@ var currentScanPart;
     currentScanPart[currentScanPart["Ingredients"] = 3] = "Ingredients";
 })(currentScanPart || (currentScanPart = {}));
 var croppedImageDataURL;
+var RecipeImage;
 $( document ).ready(function() {
     var canvas  = $("#canvas"),
         context = canvas.get(0).getContext('2d');
@@ -25,6 +26,9 @@ $( document ).ready(function() {
                 });
                 $('#btnCrop').click(function() {
                     croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png");
+                    if(currentPart==currentScanPart.Image){
+                        RecipeImage=croppedImageDataURL;
+                    }
                     displayCurrentPart(croppedImageDataURL)
                 });
                 $('#btnRestore').click(function() {
@@ -43,7 +47,8 @@ $( document ).ready(function() {
         alert('No file(s) selected.');
         }
     }); 
-    window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB;
+    window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
+    dbVersion=1
 
     //#region events
     const title= document.querySelector('input[id="txtTitle"]')
@@ -112,7 +117,7 @@ $( document ).ready(function() {
         $('#txtMaking').val("")
     })
     btnFinished.addEventListener("click", (event)=>{
-        inputFinished($('#txtTitle').val(), croppedImageDataURL, $('#txtIngredients').val(), $('#txtMaking').val())
+        inputFinished($('#txtTitle').val(), RecipeImage, $('#txtIngredients').val(), $('#txtMaking').val())
     })
     search.addEventListener("click", (event)=>{
         console.log("search click");
@@ -209,7 +214,6 @@ function inputFinished(title, imgcanvas, ingredients, making){
         const store = txn.objectStore('Rezepte');
         //
         let query = store.put({Title:title, Image:imgcanvas, Ingredients: ingredients, Making:making});
-        
         // handle success case
         query.onsuccess = function (event) {
             location.href=location.href
