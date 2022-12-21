@@ -58,7 +58,6 @@ function GetRecipes(title){
     };
 }
 function ShowRecipe(recipe){
-    console.table(recipe)
     document.getElementById('showTitle').innerText=recipe.Title,
     document.getElementById('showIngredients').innerText=recipe.Ingredients
     document.getElementById('showMaking').innerText=recipe.Making

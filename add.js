@@ -189,6 +189,18 @@ function inputFinished(title, imgcanvas, ingredients, making){
     request.onerror = (event) => {
         console.error(`Database error: ${event.target.errorCode}`);
     };
+    request.onupgradeneeded = (event) => {
+        let db = event.target.result;
+   
+        // create the Contacts object store 
+        // with auto-increment id
+        let store = db.createObjectStore('Rezepte', {
+            autoIncrement: true,
+            keyPath: 'by_title'
+        });
+        store.createIndex("by_title", "Title");
+        store.createIndex("by_ingredients", "Ingredients");
+    };
     
     request.onsuccess = (event) => {
         const db=event.target.result
@@ -212,18 +224,5 @@ function inputFinished(title, imgcanvas, ingredients, making){
         txn.oncomplete = function () {
             db.close();
         };
-    };
-
-    request.onupgradeneeded = (event) => {
-        let db = event.target.result;
-   
-        // create the Contacts object store 
-        // with auto-increment id
-        let store = db.createObjectStore('Rezepte', {
-            autoIncrement: true,
-            keyPath: 'by_title'
-        });
-        store.createIndex("by_title", "Title");
-        store.createIndex("by_ingredients", "Ingredients");
     };
 }

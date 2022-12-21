@@ -21,6 +21,7 @@ $( document ).ready(function() {
     
 })
 function GetRecipes(searchWord){
+    
     window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
     dbVersion=1
     const request = indexedDB.open('MeineRezepte', 1);
