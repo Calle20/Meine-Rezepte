@@ -7,6 +7,11 @@ $(document).ready(function() {
     })
     
     var query=location.search
+    if(query==""){
+        query=localStorage.getItem("currentRecipeShown")
+    }
+    localStorage.setItem("currentRecipeShown", query)
+    
     GetRecipes(decodeURIComponent(query.split("=")[1]))
     var uri = window.location.toString();
     if (uri.indexOf("?") > 0) {

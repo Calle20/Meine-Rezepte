@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+    document.getElementById('alert').classList.add('visually-hidden')
     const search=document.getElementById('search');
     search.addEventListener("click", (event)=>{
         let searchinput=document.getElementById('searchInput').value
@@ -9,6 +10,7 @@ $( document ).ready(function() {
     if(query==""){
         query=localStorage.getItem("currentSearchWord")
     }
+
     localStorage.setItem("currentSearchWord", query)
     var uri = window.location.toString();
     if (uri.indexOf("?") > 0) {
@@ -105,6 +107,5 @@ let initListOfCards = (rezepte) => {
 };
 
 function ShowNothingFound() {
-    //Show User Output
-    window.history.back()
+    document.getElementById('alert').classList.remove('visually-hidden')
 }
