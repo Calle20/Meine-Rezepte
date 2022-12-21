@@ -1,4 +1,11 @@
 $(document).ready(function() {
+    const search=document.getElementById('search');
+    search.addEventListener("click", (event)=>{
+        let searchinput=document.getElementById('searchInput').value
+        document.getElementById('searchInput').value=""
+        location.assign(location.href.replace("show.html","search.html?title="+searchinput))
+    })
+    
     var query=location.search
     GetRecipes(decodeURIComponent(query.split("=")[1]))
     var uri = window.location.toString();
@@ -29,7 +36,7 @@ function GetRecipes(title){
         query.onsuccess = function (event) {
             const recipes=query.result
             recipes.forEach(ele => {
-                if(ele.Title.includes(title)){
+                if(ele.Title==title){
                     ShowRecipe(ele);
                 }
             });

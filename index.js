@@ -31,6 +31,13 @@ $( document ).ready(function() {
             db.close();
         };
     };
+
+    const search=document.getElementById('search');
+    search.addEventListener("click", (event)=>{
+        let searchinput=document.getElementById('searchInput').value
+        document.getElementById('searchInput').value=""
+        location.assign(location.href.replace("index.html","search.html?title="+searchinput))
+    })
 })
 let createCard = (task) => {
     cardContainer = document.getElementById('card-container');    
@@ -70,4 +77,4 @@ let initListOfCards = (rezepte) => {
         document.getElementById('card-container').replaceWith(cardContainer);
         return;
     }
-}; 
+};

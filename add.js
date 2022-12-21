@@ -55,6 +55,7 @@ $( document ).ready(function() {
     const repeatIngredients= document.querySelector('input[id="repeatIngredients"]')
     const repeatMaking= document.querySelector('input[id="repeatMaking"]')
     const btnFinished=document.querySelector('input[id="btnFinished"]')
+    const search=document.getElementById('search');
     var element=document.createElement("canvas")
     element.setAttribute("id","imgcanvas")
     imagediv.appendChild(element)
@@ -113,6 +114,12 @@ $( document ).ready(function() {
     })
     btnFinished.addEventListener("click", (event)=>{
         inputFinished($('#txtTitle').val(), croppedImageDataURL, $('#txtIngredients').val(), $('#txtMaking').val())
+    })
+    search.addEventListener("click", (event)=>{
+        console.log("search click");
+        let searchinput=document.getElementById('searchInput').value
+        document.getElementById('searchInput').value=""
+        location.assign(location.href.replace("add.html","search.html?title="+searchinput))
     })
     //#endregion
 });
