@@ -43,8 +43,7 @@ $( document ).ready(function() {
         alert('No file(s) selected.');
         }
     }); 
-    window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
-    dbVersion=1
+    window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB;
 
     //#region events
     const title= document.querySelector('input[id="txtTitle"]')
