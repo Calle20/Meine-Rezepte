@@ -40,7 +40,7 @@ $( document ).ready(function() {
             reader.readAsDataURL(this.files[0]);
         }
         else {
-            alert("Invalid file type! Please select an image file.");
+            alert("Ungültiger Datei-Typ. Bitte eien Bilddatei auswählen.");
         }
         }
         else {
@@ -94,6 +94,11 @@ $( document ).ready(function() {
     })
     repeatImg.addEventListener('click', (event)=> {
         currentPart=currentScanPart.Image
+        imagediv.classList.add('focused')
+        ingredients.classList.remove('Focused')
+        title.classList.remove('Focused')
+        making.classList.remove('Focused')
+
         imgcanvas.parentNode.removeChild(imgcanvas)
         var element=document.createElement("canvas")
         element.setAttribute("id","imgcanvas")
@@ -109,7 +114,7 @@ $( document ).ready(function() {
         $('#txtIngredients').val("")
     })
     repeatMaking.addEventListener('click', (event)=> {
-        image.classList.remove('Focused')
+        imagediv.classList.remove('Focused')
         making.classList.add('Focused')
         ingredients.classList.remove('Focused')
         title.classList.remove('Focused')
@@ -120,7 +125,6 @@ $( document ).ready(function() {
         inputFinished($('#txtTitle').val(), RecipeImage, $('#txtIngredients').val(), $('#txtMaking').val())
     })
     search.addEventListener("click", (event)=>{
-        console.log("search click");
         let searchinput=document.getElementById('searchInput').value
         document.getElementById('searchInput').value=""
         location.assign(location.href.replace("add.html","search.html?title="+searchinput))
@@ -139,7 +143,7 @@ function displayCurrentPart(croppedImageDataURL){
     croppedImage.src=croppedImageDataURL
     switch (currentPart){
         case currentScanPart.Title:
-            readTXT(croppedImage, $('#txtTitle'))
+            readTXT(croppedImage, document.querySelector('input[id=txtTitle]'))
             currentPart = currentScanPart.Image;
             break;
         case currentScanPart.Image:
@@ -149,11 +153,11 @@ function displayCurrentPart(croppedImageDataURL){
             currentPart = currentScanPart.Ingredients;
             break;
         case currentScanPart.Ingredients:
-            readTXT(croppedImage, $('#txtIngredients'))
+            readTXT(croppedImage, document.querySelector('textarea[id=txtIngredients]'))
             currentPart = currentScanPart.Making;
             break;
         case currentScanPart.Making:
-            readTXT(croppedImage, $('#txtMaking'))
+            readTXT(croppedImage, document.querySelector('textarea[id="txtMaking"]'))
             break;
     }
 }
@@ -170,9 +174,15 @@ function drawImageScaled(img, ctx) {
 }
 
 function readTXT(croppedImage, field){
-    field.attr('placeholder','Lädt...')
+    let pBar=CreateProgressBar(field)
     const worker = Tesseract.createWorker({
-    logger: m => console.log(m)
+        logger: m => {
+            if(m.status=='recognizing text')
+            {
+                pBar.style="width: "+m.progress*100+"%;"
+                pBar.innerText=Math.round(m.progress*100)+"%"
+            }
+        }
     });
     (async () => {
     await worker.load();
@@ -181,17 +191,51 @@ function readTXT(croppedImage, field){
     const { data: { text } } = await worker.recognize(croppedImage);
     outtext=text.replace("\n\n", '');
     outtext=outtext.replace(/\n+/g, '\n', "Lol")
-    field.val(outtext)
-    field.attr('placeholder','')
+    ShowOutput(field, outtext)
     await worker.terminate();
+    RemoveProgressBar(field, pBar)
     })();
+    
+}
+
+function CreateProgressBar(field){
+    let pDiv=document.createElement('div')
+    pDiv.className="progress"
+
+    let pBar=document.createElement('div')
+    pBar.className="progress-bar"
+    pBar.role="progressbar"
+    pBar.ariaLabel="Progressbar"
+    pBar.ariaValueNow="0"
+    pBar.ariaValueMin="0"
+    pBar.ariaValueMax="100"
+    pDiv.appendChild(pBar)
+
+    field.parentElement.appendChild(pDiv)
+    return pBar
+}
+
+function RemoveProgressBar(field, pBar){
+    field.parentElement.removeChild(pBar.parentElement);
+}
+
+function ShowOutput(field, outtext){
+    if(field==document.querySelector('textarea[id=txtIngredients]')){
+        $('#txtIngredients').val(outtext)
+    }
+    else if(field==document.querySelector('textarea[id="txtMaking"]')){
+        $('#txtMaking').val(outtext)
+    }
+    else{
+        $('#txtTitle').val(outtext)
+    }
 }
 
 function inputFinished(title, imgcanvas, ingredients, making){
     const request = indexedDB.open('MeineRezepte', 1);
     
     request.onerror = (event) => {
-        console.error(`Database error: ${event.target.errorCode}`);
+        alert(`Database error: ${event.target.errorCode}`);
     };
     
     request.onsuccess = (event) => {
@@ -208,7 +252,7 @@ function inputFinished(title, imgcanvas, ingredients, making){
         };
         // handle the error case
         query.onerror = function (event) {
-            console.log(event.target.errorCode);
+            alert(event.target.errorCode);
         }
         // close the database once the 
         // transaction completes

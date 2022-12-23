@@ -4,7 +4,7 @@ $( document ).ready(function() {
     const request = indexedDB.open('MeineRezepte', 1);
     
     request.onerror = (event) => {
-        console.error(`Database error: ${event.target.errorCode}`);
+        alert(`Database error: ${event.target.errorCode}`);
     };
 
     request.onupgradeneeded = (event) => {
@@ -36,7 +36,7 @@ $( document ).ready(function() {
         };
         // handle the error case
         query.onerror = function (event) {
-            console.log(event.target.errorCode);
+            alert(event.target.errorCode);
         }
         // close the database once the 
         // transaction completes
@@ -60,6 +60,7 @@ let createCard = (task) => {
 
     let cardImg=document.createElement('img');
     cardImg.className='card-img-top';
+    cardImg.alt="Kein Bild hinzugefügt"
 
     let cardBody = document.createElement('div');
     cardBody.className = 'card-body';
@@ -76,7 +77,6 @@ let createCard = (task) => {
     card.appendChild(cardImg)
     card.appendChild(cardBody)
     card.addEventListener('click', (event) => {
-        console.log(location.href);
         location.assign(location.href.replace("index.html","show.html?title="+task.Title))
     });
     cardContainer.appendChild(card);

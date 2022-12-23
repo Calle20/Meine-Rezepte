@@ -26,7 +26,7 @@ function GetRecipes(title){
     const request = indexedDB.open('MeineRezepte', 1);
     
     request.onerror = (event) => {
-        console.error(`Database error: ${event.target.errorCode}`);
+        alert(`Database error: ${event.target.errorCode}`);
     };
     
     request.onsuccess = (event) => {
@@ -48,7 +48,7 @@ function GetRecipes(title){
         };
         // handle the error case
         query.onerror = function (event) {
-            console.log(event.target.errorCode);
+            alert(event.target.errorCode);
         }
         // close the database once the 
         // transaction completes
