@@ -12,8 +12,8 @@
     <script src="node_modules/cropperjs/dist/cropper.js"></script>
     <link  href="node_modules/cropperjs/dist/cropper.css" rel="stylesheet">
     <script src="node_modules/jquery-cropper/dist/jquery-cropper.js"></script>
-    <link rel="stylesheet" href="index.css">
-    <style type="text/css" media="all">@import url('index.css');</style>
+    <link rel="stylesheet" href="index_PC.css">
+    <style type="text/css" media="all">@import url('index_PC.css');</style>
     <script src="node_modules/tesseract.js/dist/tesseract.min.js"></script>
     <script src="add.js"></script>
 </head>
@@ -49,6 +49,10 @@
         </div>
         <div id="canvas-container">
           <canvas id="canvas">Your browser not support the HTML5 canvas</canvas>
+        </div>
+        <div>
+          <input type="button" value="Exportiere Rezepte" id="btnExport">
+          <input type="file" name="Importiere Rezepte" id="btnImport" value="Importiere Rezepte">
         </div>
       </div>
       <div id="instructions">

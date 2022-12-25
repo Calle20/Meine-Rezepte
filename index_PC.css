@@ -1,0 +1,100 @@
+img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
+  
+#canvas {
+    height: 85vh;
+    width: 50vw;
+    background-color: #ffffff;
+    cursor: default;
+    border: 1px solid black;
+    top:5vh
+  }
+#canvas-container{
+    top: 5vh;
+    left: 5vw
+}
+#input-fields{
+    top:5vh;
+    width: 50vw;
+    padding-bottom: 1vh;
+}
+.flexbox{
+  display: flex;
+  justify-content: flex-start;
+}
+#content{
+  display: flex;
+  top: 50vh !important;
+  padding: 1vh 1vw 1vh 1vw;
+}
+.nav-custom{
+  height: 7vh
+}
+.searchinput{
+   margin-bottom: 0 !important;
+}
+#instructions{
+  padding-left: 1vw;
+}
+.box{
+  display: flex;
+  align-items:flex-start;
+  margin-top: 0.3vh;
+}
+.imgdiv{
+  border: 1pt solid black;
+  padding: 1pt;
+  height: 20vh;
+  width: 24.5vw;
+  margin-left:5.3vw !important;
+
+}
+#imgcanvas{
+  height: 20vh;
+  width: 24vw;
+}
+.Focused{
+  border: 2pt solid black;
+  padding: 0 !important;
+}
+#btnFinished{
+  margin-left: 1vw;
+}
+.area{
+  resize: none;
+  padding: 1.2pt;
+}
+#txtIngredients{
+  margin-left: 3.8vw !important;
+  width: 24.6vw;
+  height: 24vh;
+}
+#txtMaking{
+  margin-left: 2.2vw !important;
+  width: 24.6vw;
+  height: 24vh;
+}
+#txtTitle{
+  margin-left: 5vw !important;
+}
+#instructions{
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.left{
+  min-width: 43%;
+  max-width: 45%;
+}
+.right{
+  min-width: 55%;
+  max-width: 55%;
+}
+.fs-1{
+  font-size: calc(1.375rem + 2.0vw)!important;
+  color:cadetblue
+}
+.fs-2{
+  font-size: calc(1.375rem + 1.0vw)!important;
+  color: green;
+}

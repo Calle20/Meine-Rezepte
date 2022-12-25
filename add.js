@@ -40,7 +40,7 @@ $( document ).ready(function() {
             reader.readAsDataURL(this.files[0]);
         }
         else {
-            alert("Ungültiger Datei-Typ. Bitte eien Bilddatei auswählen.");
+            alert("Ungültiger Datei-Typ. Bitte eine Bilddatei auswählen.");
         }
         }
         else {
@@ -60,6 +60,8 @@ $( document ).ready(function() {
     const repeatMaking= document.querySelector('input[id="repeatMaking"]')
     const btnFinished=document.querySelector('input[id="btnFinished"]')
     const search=document.getElementById('search');
+    const btnExport=document.getElementById('btnExport');
+    const btnImport=document.getElementById('btnImport');
     var element=document.createElement("canvas")
     element.setAttribute("id","imgcanvas")
     imagediv.appendChild(element)
@@ -129,6 +131,42 @@ $( document ).ready(function() {
         document.getElementById('searchInput').value=""
         location.assign(location.href.replace("add.html","search.html?title="+searchinput))
     })
+
+    btnExport.addEventListener("click", (event)=>{
+        window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
+        dbVersion=1
+        const request = indexedDB.open('MeineRezepte', 1);
+        
+        request.onerror = (event) => {
+            alert(`Database error: ${event.target.errorCode}`);
+        };
+
+        request.onsuccess = (event) => {
+            const db=event.target.result
+            // create a new transaction
+            const txn = db.transaction('Rezepte');
+                // get the Contacts object store
+            const store = txn.objectStore('Rezepte');
+            //
+            let query = store.getAll();
+            
+            // handle success case
+            query.onsuccess = function (event) {
+                download("rezepte.json", JSON.stringify(query.result));
+            };
+            // handle the error case
+            query.onerror = function (event) {
+                alert(event.target.errorCode);
+            }
+            // close the database once the 
+            // transaction completes
+            txn.oncomplete = function () {
+                db.close();
+            };
+        };
+
+    })
+    btnImport.addEventListener('change', readSingleFile, false);
     //#endregion
 });
 //#region Variables
@@ -160,6 +198,36 @@ function displayCurrentPart(croppedImageDataURL){
             readTXT(croppedImage, document.querySelector('textarea[id="txtMaking"]'))
             break;
     }
+}
+function readSingleFile(evt) {
+    var f = evt.target.files[0];
+    var contents=[];
+    if (f) {
+        var r = new FileReader();
+        r.onload = function(e) { 
+            contents = e.target.result;
+            var content=JSON.parse(contents);
+            content.forEach(recipe => {
+                inputFinished(recipe.Title, recipe.Image, recipe.Ingredients, recipe.Making)
+            });
+        }
+        r.readAsText(f);
+    } else {
+        alert("Failed to load file");
+    }
+    
+}
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
 }
 
 function drawImageScaled(img, ctx) {
