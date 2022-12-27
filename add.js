@@ -244,6 +244,38 @@ function GetRecipes(title){
         query.onerror = function (event) {
             alert(event.target.errorCode);
         }
+
+        // close the database once the 
+        // transaction completes
+        txn.oncomplete = function () {
+            db.close();
+        };
+    };
+}
+
+function deleteRecipe(title){
+    const request = indexedDB.open('MeineRezepte', 1);
+    
+    request.onerror = (event) => {
+        alert(`Database error: ${event.target.errorCode}`);
+    };
+    
+    request.onsuccess = (event) => {
+        const db=event.target.result
+        // get the Contacts object store
+        const txn=db.transaction('Rezepte','readwrite')
+        const store = txn.objectStore('Rezepte');
+        //
+        query=store.delete(title)
+
+        query.onsuccess = function (event) {
+            console.log("succes");
+        };
+        // handle the error case
+        query.onerror = function (event) {
+            alert(event.target.errorCode);
+        }
+
         // close the database once the 
         // transaction completes
         txn.oncomplete = function () {
@@ -392,4 +424,5 @@ function ShowRecipe(recipe){
     croppedImage.onload = drawImageScaled.bind(null,croppedImage,context)
     $('#txtIngredients').val(recipe.Ingredients)
     $('#txtMaking').val(recipe.Making)
+    deleteRecipe(recipe.Title)
 }
