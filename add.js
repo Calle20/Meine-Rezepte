@@ -53,6 +53,11 @@ $( document ).ready(function() {
     var query=location.search
     if(query!=""){
         GetRecipes(decodeURIComponent(query.split("=")[1]))
+        document.getElementById('btnDeleteBox').classList.remove('visually-hidden')
+        document.getElementById('btnDeleteBox').addEventListener('click', (event)=>{
+            deleteRecipe(query.split("=")[1]);
+            location.href=location.href
+        })
         var uri = window.location.toString();
         if (uri.indexOf("?") > 0) {
             var clean_uri = uri.substring(0, uri.indexOf("?"));
@@ -220,8 +225,6 @@ function displayCurrentPart(croppedImageDataURL){
 }
 
 function GetRecipes(title){
-    window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
-    dbVersion=1
     const request = indexedDB.open('MeineRezepte', 1);
     
     request.onerror = (event) => {
@@ -400,6 +403,7 @@ function inputFinished(title, imgcanvas, ingredients, making){
         let query = store.put({Title:title, Image:imgcanvas, Ingredients: ingredients, Making:making}, title);
         // handle success case
         query.onsuccess = function (event) {
+            document.getElementById('btnDeleteBox').classList.add('visually-hidden')
             location.href=location.href
         };
         // handle the error case

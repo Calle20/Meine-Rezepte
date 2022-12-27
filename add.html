@@ -95,9 +95,13 @@
             <p>&nbsp;</p>
             <input type="button" id="repeatMaking" value="Leeren">
           </div>
-          <div class="box">
+          <div class="box align-items-baseline">
             <li>Wenn alles stimmt, Fertig drücken</li>
-            <input type="button" id="btnFinished" value="Fertig" />
+            <input type="button" id="btnFinished" value="Fertig" class="ms-1">
+            <div class="box align-items-baseline visually-hidden" id="btnDeleteBox">
+              <p class="ms-5">Rezept löschen:</p>
+              <input type="button" value="Löschen" id="btnDelete" class="ms-2 ">
+            </div>
           </div>
         </ol>
       </div>
