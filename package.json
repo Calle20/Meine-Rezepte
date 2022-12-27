@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bootstrap-switch-button": "^1.1.0",
     "cropperjs": "^1.5.12",
     "jquery": "^3.6.1",
     "jquery-cropper": "^1.0.1",

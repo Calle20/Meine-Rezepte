@@ -49,7 +49,16 @@ $( document ).ready(function() {
     }); 
     window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
     dbVersion=1
-
+    
+    var query=location.search
+    if(query!=""){
+        GetRecipes(decodeURIComponent(query.split("=")[1]))
+        var uri = window.location.toString();
+        if (uri.indexOf("?") > 0) {
+            var clean_uri = uri.substring(0, uri.indexOf("?"));
+            window.history.replaceState({}, document.title, clean_uri);
+        }
+    }
     //#region events
     const title= document.querySelector('input[id="txtTitle"]')
     const ingredients= document.querySelector('textarea[id=txtIngredients]')
@@ -62,6 +71,16 @@ $( document ).ready(function() {
     const search=document.getElementById('search');
     const btnExport=document.getElementById('btnExport');
     const btnImport=document.getElementById('btnImport');
+    const fileInput = document.getElementById("fileInput");
+
+    window.addEventListener('paste', e => {
+        if (e.clipboardData.files[0].type.match(/^image\//)){
+            fileInput.files = e.clipboardData.files;
+            var clickevent=document.createEvent("MouseEvents");
+            clickevent.initEvent("change", true, true);
+            document.getElementById("fileInput").dispatchEvent(clickevent);
+        }
+    });
     var element=document.createElement("canvas")
     element.setAttribute("id","imgcanvas")
     imagediv.appendChild(element)
@@ -199,6 +218,40 @@ function displayCurrentPart(croppedImageDataURL){
             break;
     }
 }
+
+function GetRecipes(title){
+    window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
+    dbVersion=1
+    const request = indexedDB.open('MeineRezepte', 1);
+    
+    request.onerror = (event) => {
+        alert(`Database error: ${event.target.errorCode}`);
+    };
+    
+    request.onsuccess = (event) => {
+        const db=event.target.result
+        // get the Contacts object store
+        const txn=db.transaction('Rezepte')
+        const store = txn.objectStore('Rezepte');
+        //
+        let query = store.get(title);
+        
+        // handle success case
+        query.onsuccess = function (event) {
+            ShowRecipe(query.result)
+        };
+        // handle the error case
+        query.onerror = function (event) {
+            alert(event.target.errorCode);
+        }
+        // close the database once the 
+        // transaction completes
+        txn.oncomplete = function () {
+            db.close();
+        };
+    };
+}
+
 function readSingleFile(evt) {
     var f = evt.target.files[0];
     var contents=[];
@@ -301,7 +354,6 @@ function ShowOutput(field, outtext){
 
 function inputFinished(title, imgcanvas, ingredients, making){
     const request = indexedDB.open('MeineRezepte', 1);
-    
     request.onerror = (event) => {
         alert(`Database error: ${event.target.errorCode}`);
     };
@@ -313,7 +365,7 @@ function inputFinished(title, imgcanvas, ingredients, making){
             // get the Contacts object store
         const store = txn.objectStore('Rezepte');
         //
-        let query = store.put({Title:title, Image:imgcanvas, Ingredients: ingredients, Making:making});
+        let query = store.put({Title:title, Image:imgcanvas, Ingredients: ingredients, Making:making}, title);
         // handle success case
         query.onsuccess = function (event) {
             location.href=location.href
@@ -328,4 +380,16 @@ function inputFinished(title, imgcanvas, ingredients, making){
             db.close();
         };
     };
+}
+
+function ShowRecipe(recipe){
+    $('#txtTitle').val(recipe.Title)
+    var croppedImage = new Image();
+    croppedImage.src=recipe.Image
+    RecipeImage=recipe.Image
+    var canvas=$('#imgcanvas');
+    var context=canvas.get(0).getContext('2d');
+    croppedImage.onload = drawImageScaled.bind(null,croppedImage,context)
+    $('#txtIngredients').val(recipe.Ingredients)
+    $('#txtMaking').val(recipe.Making)
 }

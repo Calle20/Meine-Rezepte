@@ -98,3 +98,6 @@ img {
   font-size: calc(1.375rem + 1.0vw)!important;
   color: green;
 }
+.card-body{
+  padding-bottom: 0 !important;
+}
