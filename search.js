@@ -21,6 +21,10 @@ $( document ).ready(function() {
     
 })
 function GetRecipes(searchWord){
+
+    searchWord=searchWord.split(" ")
+
+    console.log(searchWord);
     
     window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB,
     dbVersion=1
@@ -43,9 +47,19 @@ function GetRecipes(searchWord){
         query.onsuccess = function (event) {
             const recipes=query.result
             recipes.forEach(ele => {
-                if(ele.Title.toUpperCase().includes(searchWord.toUpperCase())||ele.Ingredients.toUpperCase().includes(searchWord.toUpperCase())){
+                let pushnot=true
+                searchWord.forEach(word=>{
+                    if(ele.Title.toUpperCase().includes(word.toUpperCase())||ele.Ingredients.toUpperCase().includes(word.toUpperCase())){
+                        pushnot=false
+                    }
+                    else{
+                        pushnot=true
+                    }
+                })
+                if(!pushnot){
                     result.push(ele)
                 }
+                
             }); 
             if(result.length==0){
                 ShowNothingFound();
