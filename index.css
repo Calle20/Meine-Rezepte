@@ -19,10 +19,6 @@ img {
     width: 50vw;
     padding-bottom: 1vh;
 }
-.flexbox{
-  display: flex;
-  justify-content: flex-start;
-}
 #content{
   display: flex;
   top: 50vh !important;

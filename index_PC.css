@@ -19,10 +19,6 @@ img {
     width: 50vw;
     padding-bottom: 1vh;
 }
-.flexbox{
-  display: flex;
-  justify-content: flex-start;
-}
 #content{
   display: flex;
   top: 50vh !important;
@@ -73,7 +69,7 @@ img {
   height: 24vh;
 }
 #txtTitle{
-  margin-left: 5vw !important;
+  margin-left: 5.2vw !important;
 }
 #instructions{
   overflow-x: hidden;
@@ -94,4 +90,12 @@ img {
 .fs-2{
   font-size: calc(1.375rem + 1.0vw)!important;
   color: green;
+}
+.card-body{
+  padding-bottom: 0 !important;
+}
+
+#card-container::-webkit-scrollbar{
+  width:0;
+  background-color:transparent;
 }

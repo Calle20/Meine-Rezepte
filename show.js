@@ -60,7 +60,7 @@ function GetRecipes(title){
 function ShowRecipe(recipe){
     document.getElementById('showTitle').innerText=recipe.Title,
     document.getElementById('showIngredients').innerText=recipe.Ingredients
-    let making=recipe.Making.replace(/\Linkslauf/g, "<img src='assets/leftarrow.png'>").replace(/\Mixtopf geschlossen/g, "<img src='assets/mixtopf.png'>")
+    let making=recipe.Making.replace(/\Linkslauf/g, "<img src='assets/leftarrow.png'>").replace(/\Mixtopf geschlossen/g, "<img src='assets/mixtopf.png'>").replace(/\Modus „Teig kneten“/g, "<img src='assets/corn.png'>")
     document.getElementById('showMaking').innerHTML=making.replace(/\Sanftrührstufe/g,"<img src='assets/spoon.png'>")
     let img=document.getElementById('showImage')
     img.src=recipe.Image
