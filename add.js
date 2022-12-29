@@ -22,7 +22,7 @@ $( document ).ready(function() {
                 context.canvas.width  = img.width;
                 context.drawImage(img, 0, 0);
                 var cropper = canvas.cropper({
-                    scalable:false,
+                    scalable:false
                 });
                 $('#btnCrop').click(function() {
                     croppedImageDataURL = canvas.cropper('getCroppedCanvas').toDataURL("image/png");

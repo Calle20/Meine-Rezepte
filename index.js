@@ -62,21 +62,21 @@ let createCard = (task) => {
     cardContainer = document.getElementById('card-container');    
     let card = document.createElement('div');
     card.className = 'card shadow ms-2';
-    card.style="width: 13rem; height: 14rem;"
+    card.style="width: 13rem; height: 15rem;"
 
     let cardImg=document.createElement('img');
     cardImg.className='card-img-top';
     cardImg.alt="Kein Bild hinzugefügt"
 
     let cardBody = document.createElement('div');
-    cardBody.className = 'card-body';
+    cardBody.className = 'card-body  d-flex align-items-center justify-content-center';
 
     let title = document.createElement('h5');
     title.innerText = task.Title;
     title.className = 'card-title';
 
     cardImg.src=task.Image
-    cardImg.style="height: 10rem; object-fit: cover;"
+    cardImg.style="min-height: 10rem; max-height: 10rem; object-fit: cover; padding-top: 0.5vh;"
 
     cardBody.appendChild(title);
     card.appendChild(cardImg)
